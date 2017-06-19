@@ -144,13 +144,13 @@ class L10nEsAeatMod340CalculateRecords(models.TransientModel):
             })
             if invoice.type in ['out_invoice', 'out_refund']:
                 invoice_created = invoices340.create(values)
-            if invoice.type in ['in_invoice', 'in_refund']:
-                values.update({
-                    'supplier_invoice_number': (
-                        invoice.supplier_invoice_number or
-                        invoice.reference or ''),
-                })
+                invoices340 += invoice_created
+            elif invoice.type in ['in_invoice', 'in_refund']:
+                values['supplier_invoice_number'] = (
+                    invoice.supplier_invoice_number or invoice.reference or ''
+                )
                 invoice_created = invoices340_rec.create(values)
+                invoices340_rec += invoice_created
             tot_invoice = invoice.cc_amount_untaxed * sign
             check_base = 0
             invoice_base_tax = 0
