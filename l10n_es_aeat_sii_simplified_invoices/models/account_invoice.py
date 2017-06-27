@@ -5,6 +5,7 @@
 import logging
 
 from openerp import _, api, exceptions, fields, models
+from openerp.tools.float_utils import float_round
 
 _logger = logging.getLogger(__name__)
 
@@ -103,7 +104,7 @@ class AccountInvoice(models.Model):
                     "NombreRazon": self.partner_id.name[0:120],
                 },
                 "TipoDesglose": self._get_sii_out_taxes(),
-                "ImporteTotal": self.amount_total * sign,
+                "ImporteTotal": float_round(self.amount_total * sign, 2),
             }
             exp_dict = inv_dict['FacturaExpedida']
             if vat_required:

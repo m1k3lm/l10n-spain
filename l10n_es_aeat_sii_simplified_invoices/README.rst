@@ -39,6 +39,16 @@ Known issues / Roadmap
 
 * No incluye el procesado desde el POS/TPV, sólo facturas directas.
 
+* Tipos de facturas y estado actual:
+
+   * Facturas emitidas simplificadas:
+
+      * Se incluyen los impuestos desglosados, lo que no es requisito (simplemente usa el resto del estándar)
+
+   * Facturas emitidas simplificadas rectificativas:
+
+      * TODO
+
 Bug Tracker
 ===========
 
