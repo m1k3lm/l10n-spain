@@ -41,7 +41,7 @@ Known issues / Roadmap
 
 * Tipos de facturas y estado actual:
 
-   * Facturas emitidas simplificadas:
+   * Facturas emitidas simplificadas F2:
 
       * Se incluyen los impuestos desglosados, lo que no es requisito (simplemente usa el resto del estándar)
 
