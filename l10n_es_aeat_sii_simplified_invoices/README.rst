@@ -7,7 +7,7 @@ Suministro Inmediato de Información en el IVA - Facturas simplificadas
 ======================================================================
 
 Ampliación módulo para la presentación inmediata del IVA para la gestión de facturas simplificadas.
-http://www.agenciatributaria.es/static_files/AEAT/Contenidos_Comunes/La_Agencia_Tributaria/Modelos_y_formularios/Suministro_inmediato_informacion/FicherosSuministros/V_05/SII_Descripcion_ServicioWeb_v0.5_es_es.pdf
+
 
 Installation
 ============
@@ -19,7 +19,7 @@ Configuration
 
 Para configurar este módulo necesitas:
 
-#. En la configuración de las posiciones fiscales, indicar si se requiere NIF. Esto hará
+ * En la configuración de las posiciones fiscales, indicar si se requiere NIF. Esto hará
 que al procesar por SII las facturas, el mensaje enviado a hacienda sea de una forma u otra (simplificada o normal).
 
 
@@ -43,7 +43,10 @@ Known issues / Roadmap
 
    * Facturas emitidas simplificadas F2:
 
-      * Se incluyen los impuestos desglosados, lo que no es requisito (simplemente usa el resto del estándar)
+      * Se incluyen los impuestos desglosados, lo que no es requisito en todos los casos
+      (simplemente usa el resto del estándar).
+
+      * Se eliminan los datos de la contraparte en el envío a SII.
 
    * Facturas emitidas simplificadas rectificativas:
 

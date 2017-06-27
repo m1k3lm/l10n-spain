@@ -124,5 +124,4 @@ class AccountInvoice(models.Model):
                             self.mapped('origin_invoices_ids.amount_tax')
                         ),
                     }
-        print inv_dict
         return inv_dict
