@@ -25,6 +25,28 @@ class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
 
 
+    def _vat_required(self):
+        """
+        Return fiscal position vat_required value or False for no fiscal position
+        :return: True or False
+        """
+        res = True
+        if self.fiscal_position and not self.fiscal_position.vat_required:
+            res = False
+        return res
+
+
+    @api.multi
+    def _get_sii_identifier(self):
+        """Get the SII structure for a partner identifier depending on the
+        conditions of the invoice.
+        """
+        self.ensure_one()
+        if not self._vat_required():
+            return {}
+        else:
+            return super(AccountInvoice, self)._get_sii_identifier()
+
     @api.multi
     def _sii_check_exceptions(self):
         """Inheritable method for exceptions control when sending SII invoices.
@@ -54,74 +76,18 @@ class AccountInvoice(models.Model):
           cancellation of the invoice.
         :return: invoices (dict) : Dict XML with data for this invoice.
         """
-        self.ensure_one()
-        invoice_date = self._change_date_format(self.date_invoice)
-        company = self.company_id
-        ejercicio = fields.Date.from_string(
-            self.period_id.fiscalyear_id.date_start).year
-        periodo = '%02d' % fields.Date.from_string(
-            self.period_id.date_start).month
-
-        inv_dict = {
-            "IDFactura": {
-                "IDEmisorFactura": {
-                    "NIF": company.vat[2:],
-                },
-                "NumSerieFacturaEmisor": self.number[0:60],
-                "FechaExpedicionFacturaEmisor": invoice_date,
-            },
-            "PeriodoImpositivo": {
-                "Ejercicio": ejercicio,
-                "Periodo": periodo,
-            },
-        }
-        if not cancel:
-            if (self.fiscal_position and self.fiscal_position.vat_required) or \
-                    (not self.fiscal_position):
-                vat_required = True
-                tipo_factura = 'F1'
-            else:
-                vat_required = False
-
-            if not vat_required and self.type == 'out_invoice':
+        inv_dict = super(AccountInvoice, self)._get_sii_invoice_dict_out(cancel=cancel)
+        if not self._vat_required():
+            # es simplificada:
+            if self.type == 'out_invoice':
                 # factura simplificada
                 tipo_factura = 'F2'
-            elif vat_required and self.type == 'out_refund':
-                tipo_factura = 'R4'
-            elif not vat_required and self.type == 'out_refund':
+            elif self.type == 'out_refund':
                 # factura simplificada
                 tipo_factura = 'R5'
-            # Check if refund type is 'By differences'. Negative amounts!
-            sign = -1.0 if self.sii_refund_type == 'I' else 1.0
-            inv_dict["FacturaExpedida"] = {
-                # TODO: Incluir los 5 tipos de facturas rectificativas
-                "TipoFactura": tipo_factura,
-                "ClaveRegimenEspecialOTrascendencia": (
-                    self.sii_registration_key.code
-                ),
-                "DescripcionOperacion": self.sii_description[0:500],
-                "Contraparte": {
-                    "NombreRazon": self.partner_id.name[0:120],
-                },
-                "TipoDesglose": self._get_sii_out_taxes(),
-                "ImporteTotal": float_round(self.amount_total * sign, 2),
-            }
-            exp_dict = inv_dict['FacturaExpedida']
-            if vat_required:
-                # Uso condicional de IDOtro/NIF
-                exp_dict['Contraparte'].update(self._get_sii_identifier())
-            else:
-                # simplificada, no es necesario datos de contraparte
-                del exp_dict['Contraparte']
-            if self.type == 'out_refund':
-                exp_dict['TipoRectificativa'] = self.sii_refund_type
-                if self.sii_refund_type == 'S':
-                    exp_dict['ImporteRectificacion'] = {
-                        'BaseRectificada': sum(
-                            self.mapped('origin_invoices_ids.amount_untaxed')
-                        ),
-                        'CuotaRectificada': sum(
-                            self.mapped('origin_invoices_ids.amount_tax')
-                        ),
-                    }
+            if 'FacturaExpedida' in inv_dict:
+                if 'TipoFactura' in inv_dict['FacturaExpedida']:
+                    inv_dict['FacturaExpedida']['TipoFactura'] = tipo_factura
+                if 'Contraparte' in inv_dict['FacturaExpedida']:
+                    del inv_dict['FacturaExpedida']['Contraparte']
         return inv_dict
