@@ -85,6 +85,16 @@ class AccountInvoice(models.Model):
             elif self.type == 'out_refund':
                 # factura simplificada
                 tipo_factura = 'R5'
+                # se requiere redondear por si el sistema no tiene establecido
+                # a 2 dígitos los valores para account
+                if 'FacturaExpedida' in inv_dict:
+                    factExp = inv_dict['FacturaExpedida']
+                    if 'ImporteRectificacion' in factExp:
+                        importeRect = factExp['ImporteRectificacion']
+                        if 'CuotaRectificada' in importeRect:
+                            importeRect['CuotaRectificada'] = round(importeRect['CuotaRectificada'], 2)
+                        if 'BaseRectificada' in importeRect:
+                            importeRect['BaseRectificada'] = round(importeRect['BaseRectificada'], 2)
             if 'FacturaExpedida' in inv_dict:
                 if 'TipoFactura' in inv_dict['FacturaExpedida']:
                     inv_dict['FacturaExpedida']['TipoFactura'] = tipo_factura
