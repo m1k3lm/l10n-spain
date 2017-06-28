@@ -15,5 +15,6 @@
         "l10n_es_aeat_sii",
     ],
     "data": [
+        "views/res_company_view.xml"
     ],
 }

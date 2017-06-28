@@ -22,6 +22,9 @@ Para configurar este módulo necesitas:
  * En la configuración de las posiciones fiscales, indicar si se requiere NIF. Esto hará
 que al procesar por SII las facturas, el mensaje enviado a hacienda sea de una forma u otra (simplificada o normal).
 
+ * En el formulario de la compañía establecer el límite máximo para facturas simplificadas (a día de hoy jun2017
+   400€ o 3000€). Si no se indica no se podrá usar SII para aquellas posiciones fiscales que no tengan el check
+   de NIF marcado (la posición fiscal implica que se utilizará para facturas simplificadas).
 
 Usage
 =====
@@ -48,9 +51,12 @@ Known issues / Roadmap
 
       * Se eliminan los datos de la contraparte en el envío a SII.
 
-   * Facturas emitidas simplificadas rectificativas:
+   * Facturas emitidas simplificadas rectificativas (R5):
 
-      * TODO
+      * Funcionando. El asistente estándar de las rectificativas ya incluye lo necesario.
+
+   * Límite máximo legal para importes totales (impuestos incluidos) controlado e indicado
+      en el formulario de la compañía, avisando del error en el retorno SII de la factura.
 
 Bug Tracker
 ===========

@@ -66,6 +66,17 @@ class AccountInvoice(models.Model):
             raise exceptions.Warning(
                 _("This company doesn't have SII enabled.")
             )
+        if not self._vat_required():
+            if not self.company_id.max_amount_total_simplified_invoice:
+                raise exceptions.Warning(
+                    _("The company does not have the maximum amount indicated for simplified "
+                      "invoices (company form).")
+                )
+            if self.amount_total > self.company_id.max_amount_total_simplified_invoice:
+                raise exceptions.Warning(
+                    _("This invoice can not be simplified type, the amount total is above the "
+                      "limit (company form).")
+                )
 
     @api.multi
     def _get_sii_invoice_dict_out(self, cancel=False):
