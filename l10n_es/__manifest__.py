@@ -1,18 +1,17 @@
 # -*- coding: utf-8 -*-
-# © 2008-2010 Jordi Esteve - Zikzakmedia S.L.
-# © 2011 Ignacio - Ibeas - Acysos
-# © 2012-2013 Grupo Opentia
-# © 2014 Pablo Cayuela - Aserti Global Solutions
-# © 2014 Ángel Moya - Domatix
-# © 2015 Carlos Liébana - Factor Libre
-# © 2015 Albert Cabedo - GAFIC consultores
-# © 2013-2016 Serv. Tecnol. Avanzados - Pedro M. Baeza
-# © 2013-2016 Pedro M. Baeza <pedro.baeza@tecnativa.com>
+# Copyright 2008-2010 Jordi Esteve - Zikzakmedia S.L.
+# Copyright 2011 Ignacio - Ibeas - Acysos
+# Copyright 2012-2013 Grupo Opentia
+# Copyright 2014 Pablo Cayuela - Aserti Global Solutions
+# Copyright 2014 Ángel Moya - Domatix
+# Copyright 2015 Carlos Liébana - Factor Libre
+# Copyright 2015 Albert Cabedo - GAFIC consultores
+# Copyright 2013-2017 Tecnativa - Pedro M. Baeza
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
 {
     "name": "Planes de cuentas españoles (según PGCE 2008)",
-    "version": "10.0.1.1.0",
+    "version": "10.0.1.2.0",
     "author": "Spanish Localization Team, "
               "Odoo Community Association (OCA)",
     "website": 'https://github.com/OCA/l10n-spain',
@@ -33,6 +32,7 @@
         "data/taxes_common.xml",
         "data/fiscal_positions_common.xml",
         "data/account_chart_template_post.xml",
+        "views/report_invoice.xml",
     ],
     'installable': True,
     'images': [
