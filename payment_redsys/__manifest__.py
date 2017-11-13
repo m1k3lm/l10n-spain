@@ -1,10 +1,10 @@
-# -*- coding: utf-8 -*-
+# Copyright 2017 Tecnativa - Sergio Teruel
 
 {
     'name': 'Redsys Payment Acquirer',
     'category': 'Payment Acquirer',
     'summary': 'Payment Acquirer: Redsys Implementation',
-    'version': '10.0.1.0.0',
+    'version': '11.0.1.0.0',
     'author': "Tecnativa,"
               "Odoo Community Association (OCA)",
     'depends': [

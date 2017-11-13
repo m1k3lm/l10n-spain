@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # © 2016-2017 Sergio Teruel <sergio.teruel@tecnativa.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
@@ -7,12 +6,14 @@ import hmac
 import base64
 import logging
 import json
+import urllib
 
 from odoo import models, fields, api, _
 from odoo.addons.payment.models.payment_acquirer import ValidationError
 from odoo.addons import decimal_precision as dp
 from odoo.tools.float_utils import float_compare
 from odoo import exceptions
+from odoo.http import request
 
 _logger = logging.getLogger(__name__)
 
@@ -96,10 +97,31 @@ class AcquirerRedsys(models.Model):
             raise exceptions.Warning(
                 _('Partial payment percent must be between 0 and 100'))
 
+    @api.model
+    def _get_website_callback_url(self):
+        """For force a callback url from Redsys distinct to base url website,
+         only apply to a Redsys response.
+        """
+        return self.env['ir.config_parameter'].get_param(
+            'payment_redsys.callback_url')
+
+    @api.model
+    def _get_website_url(self):
+        website_id = self.env.context.get('website_id', False)
+        if website_id:
+            base_url = '%s://%s' % (
+                request.httprequest.environ['wsgi.url_scheme'],
+                self.env['website'].browse(website_id).domain
+            )
+        else:
+            base_url = self.env['ir.config_parameter'].get_param(
+                'web.base.url')
+        return base_url or ''
+
     def _prepare_merchant_parameters(self, tx_values):
         # Check multi-website
-        base_url = self.env['ir.config_parameter'].get_param(
-            'web.base.url')
+        base_url = self._get_website_url()
+        callback_url = self._get_website_callback_url()
         if self.redsys_percent_partial > 0:
             amount = tx_values['amount']
             tx_values['amount'] = amount - (
@@ -125,8 +147,8 @@ class AcquirerRedsys(models.Model):
             'Ds_Merchant_MerchantName': (
                 self.redsys_merchant_name and
                 self.redsys_merchant_name[:25]),
-            'Ds_Merchant_MerchantUrl':
-                ('%s%s' % (base_url, '/payment/redsys/return'))[:250] or False,
+            'Ds_Merchant_MerchantUrl': (
+                '%s/payment/redsys/return' % (callback_url or base_url))[:250],
             'Ds_Merchant_MerchantData': self.redsys_merchant_data or '',
             'Ds_Merchant_ProductDescription': (
                 self._product_description(tx_values['reference']) or
@@ -143,7 +165,7 @@ class AcquirerRedsys(models.Model):
         return self._url_encode64(json.dumps(values))
 
     def _url_encode64(self, data):
-        data = unicode(base64.encodestring(data), 'utf-8')
+        data = str(base64.encodestring(data), 'utf-8')
         return ''.join(data.splitlines())
 
     def _url_decode64(self, data):
@@ -219,7 +241,7 @@ class TxRedsys(models.Model):
         find the related transaction record. """
         parameters = data.get('Ds_MerchantParameters', '')
         parameters_dic = json.loads(base64.b64decode(parameters))
-        reference = parameters_dic.get('Ds_Order', '')
+        reference = urllib.unquote(parameters_dic.get('Ds_Order', ''))
         pay_id = parameters_dic.get('Ds_AuthorisationCode')
         shasign = data.get(
             'Ds_Signature', '').replace('_', '/').replace('-', '+')

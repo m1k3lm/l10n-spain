@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # © 2016-2017 Sergio Teruel <sergio.teruel@tecnativa.com>
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl).
 
@@ -121,7 +120,7 @@ class RedsysForm(RedsysCommon):
         redsys_post_data = {
             'Ds_Signature': '5PmN2yITrEFS/TkdL1d27DOWgaIE/AaB/NPu6AwtjHM=',
             'Ds_MerchantParameters': DS_parameters,
-            'Ds_SignatureVersion': u'HMAC_SHA256_V1',
+            'Ds_SignatureVersion': 'HMAC_SHA256_V1',
         }
         # Get transaction
         tx = self.tx._redsys_form_get_tx_from_data(redsys_post_data)
@@ -155,7 +154,7 @@ class RedsysForm(RedsysCommon):
         redsys_post_data = {
             'Ds_Signature': '5PmN2yITrEFS/TkdL1d27DOWgaIE/AaB/NPu6AwtjHM=',
             'Ds_MerchantParameters': DS_parameters,
-            'Ds_SignatureVersion': u'HMAC_SHA256_V1',
+            'Ds_SignatureVersion': 'HMAC_SHA256_V1',
         }
 
         # should raise error about unknown tx
@@ -177,7 +176,7 @@ class RedsysForm(RedsysCommon):
         redsys_post_data = {
             'Ds_Signature': 'dPD0ByD/YLXNyy0FKQNVyFP4beWGN+ypQW73KqswAwU=',
             'Ds_MerchantParameters': DS_parameters,
-            'Ds_SignatureVersion': u'HMAC_SHA256_V1',
+            'Ds_SignatureVersion': 'HMAC_SHA256_V1',
         }
 
         # Get transaction
@@ -201,7 +200,7 @@ class RedsysForm(RedsysCommon):
         redsys_post_data = {
             'Ds_Signature': '2pSk3Z5XzLM1H/Mcrphzj3mtEDEcC7exrg3Fv+rVY10=',
             'Ds_MerchantParameters': DS_parameters,
-            'Ds_SignatureVersion': u'HMAC_SHA256_V1',
+            'Ds_SignatureVersion': 'HMAC_SHA256_V1',
         }
 
         # Get transaction
@@ -225,7 +224,7 @@ class RedsysForm(RedsysCommon):
         redsys_post_data = {
             'Ds_Signature': 'q2YGZwpRi0tiT86L/DDypjIN6HeGTbiUqBPPYOMfxr8=',
             'Ds_MerchantParameters': DS_parameters,
-            'Ds_SignatureVersion': u'HMAC_SHA256_V1',
+            'Ds_SignatureVersion': 'HMAC_SHA256_V1',
         }
 
         # Get transaction
@@ -249,7 +248,7 @@ class RedsysForm(RedsysCommon):
         redsys_post_data = {
             'Ds_Signature': '9BFuTbffCfLxPkdOjRLxEYxSMCdkXWjKgTgvwfmemvM=',
             'Ds_MerchantParameters': DS_parameters,
-            'Ds_SignatureVersion': u'HMAC_SHA256_V1',
+            'Ds_SignatureVersion': 'HMAC_SHA256_V1',
         }
 
         # Get transaction
@@ -286,7 +285,7 @@ class RedsysForm(RedsysCommon):
         redsys_post_data = {
             'Ds_Signature': 'Glo50HlVTtkshKvr/eEYfQUggegbsoqHGw/AflqxN9M=',
             'Ds_MerchantParameters': DS_parameters,
-            'Ds_SignatureVersion': u'HMAC_SHA256_V1',
+            'Ds_SignatureVersion': 'HMAC_SHA256_V1',
         }
         # Get transaction
         tx = self.tx._redsys_form_get_tx_from_data(redsys_post_data)
