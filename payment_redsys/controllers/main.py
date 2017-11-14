@@ -50,16 +50,3 @@ class RedsysController(http.Controller):
             return request.render('payment_redsys.%s' % str(page), res)
         except:
             return request.render('website.404')
-
-
-class WebsiteSaleRedsys(WebsiteSale):
-    @http.route(['/shop/payment/transaction/<int:acquirer_id>'], type='json',
-                auth="public", website=True)
-    def payment_transaction(self, acquirer_id, tx_type='form', token=None,
-                            **kwargs):
-        tx_id = super(WebsiteSaleRedsys, self).payment_transaction(
-            acquirer_id, tx_type, token, **kwargs)
-        acquirer = request.env['payment.acquirer'].browse(acquirer_id)
-        if acquirer.provider == 'redsys':
-            request.env['website'].sale_reset()
-        return tx_id
