@@ -71,7 +71,8 @@ class RedsysForm(RedsysCommon):
         # be sure not to do stupid things
         self.assertEqual(
             self.redsys.environment, 'test', 'test without test environment')
-        base_url = self.env['ir.config_parameter'].get_param('web.base.url')
+        get_param = self.env['ir.config_parameter'].sudo().get_param
+        base_url = get_param('web.base.url')
 
         # ----------------------------------------
         # Test: button direct rendering

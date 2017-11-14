@@ -8,7 +8,7 @@
     'author': "Tecnativa,"
               "Odoo Community Association (OCA)",
     'depends': [
-        'website_portal_sale',
+        'website_payment',
     ],
     "external_dependencies": {
         "python": [
@@ -19,6 +19,7 @@
     'data': [
         'views/redsys.xml',
         'views/payment_acquirer.xml',
+        'views/payment_redsys_templates.xml',
         'data/payment_redsys.xml'
     ],
     'license': 'AGPL-3',

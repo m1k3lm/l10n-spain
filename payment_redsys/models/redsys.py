@@ -102,7 +102,8 @@ class AcquirerRedsys(models.Model):
         """For force a callback url from Redsys distinct to base url website,
          only apply to a Redsys response.
         """
-        return self.env['ir.config_parameter'].get_param(
+        get_param = self.env['ir.config_parameter'].sudo().get_param
+        return get_param(
             'payment_redsys.callback_url')
 
     @api.model
@@ -114,8 +115,8 @@ class AcquirerRedsys(models.Model):
                 self.env['website'].browse(website_id).domain
             )
         else:
-            base_url = self.env['ir.config_parameter'].get_param(
-                'web.base.url')
+            get_param = self.env['ir.config_parameter'].sudo().get_param
+            base_url = get_param('web.base.url')
         return base_url or ''
 
     def _prepare_merchant_parameters(self, tx_values):
@@ -165,11 +166,11 @@ class AcquirerRedsys(models.Model):
         return self._url_encode64(json.dumps(values))
 
     def _url_encode64(self, data):
-        data = str(base64.encodestring(data), 'utf-8')
-        return ''.join(data.splitlines())
+        data = base64.b64encode(data.encode())
+        return data
 
     def _url_decode64(self, data):
-        return json.loads(base64.b64decode(data))
+        return json.loads(base64.b64decode(data).decode())
 
     def sign_parameters(self, secret_key, params64):
         params_dic = self._url_decode64(params64)
@@ -183,12 +184,12 @@ class AcquirerRedsys(models.Model):
             IV=b'\0\0\0\0\0\0\0\0')
         diff_block = len(order) % 8
         zeros = diff_block and (b'\0' * (8 - diff_block)) or ''
-        key = cipher.encrypt(order + zeros.encode('UTF-8'))
+        key = cipher.encrypt(order + zeros.decode())
         dig = hmac.new(
             key=key,
             msg=params64,
             digestmod=hashlib.sha256).digest()
-        return self._url_encode64(dig)
+        return base64.b64encode(dig).decode()
 
     @api.multi
     def redsys_form_generate_values(self, values):
