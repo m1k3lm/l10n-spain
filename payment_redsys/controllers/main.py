@@ -7,7 +7,6 @@ import werkzeug
 
 from odoo import http
 from odoo.http import request
-from odoo.addons.website_sale.controllers.main import WebsiteSale
 
 _logger = logging.getLogger(__name__)
 
@@ -48,5 +47,5 @@ class RedsysController(http.Controller):
                 'order': order,
             }
             return request.render('payment_redsys.%s' % str(page), res)
-        except:
+        except Exception:
             return request.render('website.404')

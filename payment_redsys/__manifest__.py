@@ -9,6 +9,7 @@
               "Odoo Community Association (OCA)",
     'depends': [
         'website_payment',
+        'website_sale',
     ],
     "external_dependencies": {
         "python": [
