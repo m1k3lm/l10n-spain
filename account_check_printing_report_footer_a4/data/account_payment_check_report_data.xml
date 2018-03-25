@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+        <record id="account_payment_check_report_footer_a4"
+                model="account.payment.check.report">
+            <field name="name">Generic Spain</field>
+            <field name="report">account_check_printing_report_footer_a4.check_footer_a4</field>
+        </record>
+</odoo>

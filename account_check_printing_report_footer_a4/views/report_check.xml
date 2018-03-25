@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="check_footer_a4">
+        <t t-call="report.html_container">
+            <t t-foreach="docs" t-as="o">
+                <div class="page">
+                    <div>
+                        <div style="position:absolute; left:65mm; top:240mm;">
+                            <!-- TODO: set due date -->
+                            <span t-field="o.payment_date"/>
+                        </div>
+                        <div>
+                            <span style="position:absolute; top:240mm; left:155mm;" t-esc="o.amount"
+                                  t-options="{'widget': 'float', 'precision': 2}"/>
+                        </div>
+                        <div>
+                            <span style="position:absolute; top:254mm; left:50mm;" t-field="o.partner_id.name"/>
+                        </div>
+                        <div style="position:absolute; left:70mm; top:260mm;">
+                            <!--<strong><span t-esc="fill_stars(o.check_amount_in_words)"/></strong>-->
+                            <!--<strong><span t-esc="fill_stars(num2words(o.amount, to='currency', lang=o.company_id.partner_id.lang))"/></strong>-->
+                            <strong><span t-esc="fill_stars(num2words(o.amount))"/></strong>
+                        </div>
+                        <div>
+                            <span style="position:absolute; top:269mm; left:100mm;"
+                                  t-field="o.payment_date"
+                                  t-options="{'format': 'd'}"/>
+                            <span style="position:absolute; top:269mm; left:120mm;">Of</span>
+                            <span style="position:absolute; top:269mm; left:130mm;"
+                                  t-field="o.payment_date"
+                                  t-options="{'format': 'MMMM'}"/>
+                            <span style="position:absolute; top:269mm; left:192mm;"
+                                  t-field="o.payment_date"
+                                  t-options="{'format': 'YY'}"/>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+
+</odoo>

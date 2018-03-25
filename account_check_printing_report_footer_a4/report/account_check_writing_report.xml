@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<odoo>
+
+     <report
+        id="action_report_check_footer_a4"
+        model="account.payment"
+        string="Payment Check Spain"
+        report_type="qweb-pdf"
+        name="account_check_printing_report_footer_a4.check_footer_a4"
+        file="account_check_printing_report_footer_a4.check_footer_a4"/>
+
+    <record id="action_report_check_footer_a4" model="ir.actions.report.xml">
+        <field name="paperformat_id" ref="account_check_printing_report_footer_a4.paperformat_check_footer_a4"/>
+    </record>
+
+</odoo>
