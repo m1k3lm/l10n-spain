@@ -1,3 +1,6 @@
 pycryptodome
+pyOpenSSL
 requests
 unidecode
+xmlsig
+zeep

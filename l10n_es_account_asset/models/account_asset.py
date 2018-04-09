@@ -77,9 +77,9 @@ class AccountAssetAsset(models.Model):
          'Wrong percentage!'),
     ]
 
-    @api.multi
-    def onchange_category_id(self, category_id):
-        res = super(AccountAssetAsset, self).onchange_category_id(category_id)
+    def onchange_category_id_values(self, category_id):
+        res = super(AccountAssetAsset, self).\
+            onchange_category_id_values(category_id)
         if category_id:
             category_obj = self.env['account.asset.category']
             category = category_obj.browse(category_id)
@@ -106,8 +106,9 @@ class AccountAssetAsset(models.Model):
             percentage = 100.0
             while percentage > 0:
                 if number == 0 and self.prorata:
-                    days = (total_days -
-                            float(depreciation_date.strftime('%j'))) + 1
+                    total_days = calendar.monthrange(
+                        depreciation_date.year, depreciation_date.month)[1]
+                    days = total_days - float(depreciation_date.day) + 1
                     percentage -= self.method_percentage * days / total_days
                 else:
                     percentage -= self.method_percentage
